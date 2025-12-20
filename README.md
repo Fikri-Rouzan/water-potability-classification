@@ -6,8 +6,8 @@ A machine learning-driven approach to water potability classification based on p
 
 ## ⚙️ Algorithm
 
-- 🌳 **Random Forest**
-- 📊 **Support Vector Machine**
+- 🌳 **Random Forest.**
+- 📊 **Support Vector Machine.**
 
 ## 🗂️ Dataset
 
