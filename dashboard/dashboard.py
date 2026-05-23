@@ -27,9 +27,9 @@ def load_models():
         scaler = joblib.load(os.path.join(MODEL_DIR, "scaler.joblib"))
         rf_model = joblib.load(os.path.join(MODEL_DIR, "rf_model.joblib"))
         svm_model = joblib.load(os.path.join(MODEL_DIR, "svm_model.joblib"))
-
         return scaler, rf_model, svm_model
     except Exception as e:
+        st.error(f"Gagal memuat model. Error: {e}")
         return None, None, None
 
 
@@ -69,7 +69,6 @@ with tab1:
         st.subheader("Input Parameter Air")
 
         col1, col2, col3 = st.columns(3)
-
         with col1:
             ph = st.number_input(
                 "pH (0-14)", min_value=0.0, max_value=14.0, value=7.0, step=0.1
@@ -80,14 +79,12 @@ with tab1:
             organic_carbon = st.number_input(
                 "Organic Carbon", min_value=0.0, value=19.8, step=0.1
             )
-
         with col2:
             hardness = st.number_input("Hardness", min_value=0.0, value=185.0, step=1.0)
             sulfate = st.number_input("Sulfate", min_value=0.0, value=367.0, step=1.0)
             trihalomethanes = st.number_input(
                 "Trihalomethanes", min_value=0.0, value=75.1, step=0.1
             )
-
         with col3:
             solids = st.number_input(
                 "Solids (TDS)", min_value=0.0, value=14800.0, step=100.0
@@ -191,7 +188,7 @@ with tab1:
                         f"Berdasarkan klasifikasi algoritma **{model_used}**, air ini memiliki parameter yang beresiko jika dikonsumsi."
                     )
         else:
-            st.error("Model belum dimuat dengan benar. Pastikan folder models ada.")
+            st.error("Model belum dimuat dengan benar. Pastikan folder 'models' ada.")
 
 # Tab 2 untuk panduan parameter
 with tab2:
@@ -244,7 +241,7 @@ with tab3:
 
     if total_items == 0:
         st.info(
-            "Belum ada riwayat prediksi. Silakan lakukan analisis terlebih dahulu di tab Prediksi Kelayakan."
+            "Belum ada riwayat prediksi. Silakan lakukan analisis terlebih dahulu di tab 'Prediksi Kelayakan'."
         )
     else:
         st.write(f"Total pengujian pada sesi ini: **{total_items} data**")
