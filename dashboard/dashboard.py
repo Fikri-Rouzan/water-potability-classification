@@ -67,6 +67,7 @@ tab1, tab2, tab3 = st.tabs(
 with tab1:
     with st.container(border=True):
         st.subheader("Input Parameter Air")
+        st.markdown("Silakan isi nilai untuk setiap parameter di bawah ini:")
 
         col1, col2, col3 = st.columns(3)
         with col1:
