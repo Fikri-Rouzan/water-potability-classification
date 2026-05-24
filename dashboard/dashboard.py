@@ -74,24 +74,24 @@ with tab1:
             ph = st.number_input(
                 "pH (0-14)", min_value=0.0, max_value=14.0, value=7.0, step=0.1
             )
-            chloramines = st.number_input(
-                "Chloramines", min_value=0.0, value=7.4, step=0.1
-            )
-            organic_carbon = st.number_input(
-                "Organic Carbon", min_value=0.0, value=19.8, step=0.1
-            )
-        with col2:
             hardness = st.number_input("Hardness", min_value=0.0, value=185.0, step=1.0)
-            sulfate = st.number_input("Sulfate", min_value=0.0, value=367.0, step=1.0)
-            trihalomethanes = st.number_input(
-                "Trihalomethanes", min_value=0.0, value=75.1, step=0.1
-            )
-        with col3:
             solids = st.number_input(
                 "Solids (TDS)", min_value=0.0, value=14800.0, step=100.0
             )
+        with col2:
+            chloramines = st.number_input(
+                "Chloramines", min_value=0.0, value=7.4, step=0.1
+            )
+            sulfate = st.number_input("Sulfate", min_value=0.0, value=367.0, step=1.0)
             conductivity = st.number_input(
                 "Conductivity", min_value=0.0, value=435.0, step=1.0
+            )
+        with col3:
+            organic_carbon = st.number_input(
+                "Organic Carbon", min_value=0.0, value=19.8, step=0.1
+            )
+            trihalomethanes = st.number_input(
+                "Trihalomethanes", min_value=0.0, value=75.1, step=0.1
             )
             turbidity = st.number_input("Turbidity", min_value=0.0, value=1.9, step=0.1)
 
@@ -274,13 +274,24 @@ with tab3:
                     st.write(f"**{record['time']}** | Model: `{record['model']}`")
                     st.write(f"{record['icon']} **{record['status']}**")
 
-                    p = record["params"]
-                    st.caption(
-                        f"**pH:** {p['pH']} | **Hardness:** {p['Hardness']} | **Solids:** {p['Solids']} | "
-                        f"**Chloramines:** {p['Chloramines']} | **Sulfate:** {p['Sulfate']} | "
-                        f"**Conductivity:** {p['Conductivity']} | **Org. Carbon:** {p['Organic Carbon']} | "
-                        f"**Trihalomethanes:** {p['Trihalomethanes']} | **Turbidity:** {p['Turbidity']}"
-                    )
+                    # Menampilkan detail parameter input
+                    if "params" in record:
+                        with st.expander("Lihat Detail Parameter Input"):
+                            p = record["params"]
+                            c1, c2, c3 = st.columns(3)
+
+                            with c1:
+                                st.caption(f"pH: {p['pH']}")
+                                st.caption(f"Hardness: {p['Hardness']}")
+                                st.caption(f"Solids: {p['Solids']}")
+                            with c2:
+                                st.caption(f"Chloramines: {p['Chloramines']}")
+                                st.caption(f"Sulfate: {p['Sulfate']}")
+                                st.caption(f"Conductivity: {p['Conductivity']}")
+                            with c3:
+                                st.caption(f"Organic Carbon: {p['Organic Carbon']}")
+                                st.caption(f"Trihalomethanes: {p['Trihalomethanes']}")
+                                st.caption(f"Turbidity: {p['Turbidity']}")
 
                 # Button untuk menghapus riwayat prediksi
                 with col_btn:
