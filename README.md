@@ -1,6 +1,6 @@
 # Water Potability Classification
 
-## 📌 Deskripsi Proyek
+## 📌 Deskripsi
 
 Proyek ini dirancang untuk memetakan dan mengklasifikasikan tingkat kelayakan konsumsi air berdasarkan berbagai parameter kualitas fisik dan kimia yang terkandung di dalamnya. Dengan memanfaatkan pemodelan berbasis machine learning, sistem ini mampu memprediksi status kelayakan air berdasarkan sampel data kualitas yang dimasukkan. Hasil akhir ini bertujuan memberikan wawasan mendalam mengenai pemantauan kondisi sumber air guna mendukung penyediaan air bersih yang aman bagi kebutuhan konsumsi manusia.
 
