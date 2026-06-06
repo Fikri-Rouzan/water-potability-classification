@@ -19,7 +19,7 @@ Dataset yang digunakan dalam proyek ini bersumber dari [Kaggle: Water Quality an
 | 🌐 **Programming Language** | `Python`                                                     |
 | 🌱 **Environment**          | `Jupyter Notebook`                                           |
 | 🧩 **Framework**            | `Streamlit`                                                  |
-| ⚛️ **Libraries**            | `pandas`, `Matplotlib`, `seaborn`, `scikit-learn`, `Joblib`, |
+| ⚛️ **Libraries**            | `pandas`, `Matplotlib`, `seaborn`, `scikit-learn`, `Joblib` |
 | ⚡ **Tool**                 | `Google Colab`                                               |
 | 🚀 **Deployment**           | `Streamlit Community Cloud`                                  |
 
