@@ -97,21 +97,21 @@ if scaler and rf_model and svm_model:
                     "Chloramines (Kloramin)",
                     min_value=0.0,
                     max_value=15.0,
-                    value=7.4,
+                    value=8.8,
                     step=0.1,
                 )
                 sulfate = st.slider(
                     "Sulfate (Sulfat)",
                     min_value=0.0,
                     max_value=600.0,
-                    value=367.0,
+                    value=444.0,
                     step=1.0,
                 )
                 conductivity = st.slider(
                     "Conductivity (Konduktivitas)",
                     min_value=0.0,
                     max_value=1000.0,
-                    value=435.0,
+                    value=282.0,
                     step=1.0,
                 )
             with col3:
