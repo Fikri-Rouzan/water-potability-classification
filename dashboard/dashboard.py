@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import os
 import joblib
-import time
 import math
 from datetime import datetime
 
@@ -63,133 +62,175 @@ tab1, tab2, tab3 = st.tabs(
     ["🔍 Prediksi Kelayakan", "📖 Panduan Parameter", "🕒 Riwayat"]
 )
 
-# Tab 1 untuk prediksi kelayakan air
-with tab1:
-    with st.container(border=True):
-        st.subheader("Input Parameter Air")
-        st.markdown("Silakan isi nilai untuk setiap parameter di bawah ini:")
+# Memastikan komponen model termuat
+if scaler and rf_model and svm_model:
+    # Tab 1 untuk prediksi kelayakan air
+    with tab1:
+        with st.container(border=True):
+            st.subheader("Parameter Air")
 
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            ph = st.number_input(
-                "pH (0-14)", min_value=0.0, max_value=14.0, value=7.0, step=0.1
-            )
-            hardness = st.number_input("Hardness", min_value=0.0, value=185.0, step=1.0)
-            solids = st.number_input(
-                "Solids (TDS)", min_value=0.0, value=14800.0, step=100.0
-            )
-        with col2:
-            chloramines = st.number_input(
-                "Chloramines", min_value=0.0, value=7.4, step=0.1
-            )
-            sulfate = st.number_input("Sulfate", min_value=0.0, value=367.0, step=1.0)
-            conductivity = st.number_input(
-                "Conductivity", min_value=0.0, value=435.0, step=1.0
-            )
-        with col3:
-            organic_carbon = st.number_input(
-                "Organic Carbon", min_value=0.0, value=19.8, step=0.1
-            )
-            trihalomethanes = st.number_input(
-                "Trihalomethanes", min_value=0.0, value=75.1, step=0.1
-            )
-            turbidity = st.number_input("Turbidity", min_value=0.0, value=1.9, step=0.1)
-
-    st.write("")
-
-    # Button untuk menjalankan prediksi
-    if st.button("🔍︎ Analisis Sampel Air", type="primary", use_container_width=True):
-        if scaler and rf_model and svm_model:
-            with st.spinner("Menganalisis data..."):
-                time.sleep(0.5)
-
-                input_features = [
-                    ph,
-                    hardness,
-                    solids,
-                    chloramines,
-                    sulfate,
-                    conductivity,
-                    organic_carbon,
-                    trihalomethanes,
-                    turbidity,
-                ]
-
-                feature_names = [
-                    "ph",
-                    "Hardness",
-                    "Solids",
-                    "Chloramines",
-                    "Sulfate",
-                    "Conductivity",
-                    "Organic_carbon",
-                    "Trihalomethanes",
-                    "Turbidity",
-                ]
-
-                features_df = pd.DataFrame([input_features], columns=feature_names)
-                features_scaled = scaler.transform(features_df)
-                features_scaled_df = pd.DataFrame(
-                    features_scaled, columns=feature_names
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                ph = st.slider(
+                    "pH (Tingkat pH)",
+                    min_value=0.0,
+                    max_value=14.0,
+                    value=7.0,
+                    step=0.1,
+                )
+                hardness = st.slider(
+                    "Hardness (Kesadahan Air)",
+                    min_value=0.0,
+                    max_value=400.0,
+                    value=185.0,
+                    step=1.0,
+                )
+                solids = st.slider(
+                    "Solids / TDS (Total Padatan Terlarut)",
+                    min_value=0.0,
+                    max_value=50000.0,
+                    value=14800.0,
+                    step=100.0,
+                )
+            with col2:
+                chloramines = st.slider(
+                    "Chloramines (Kloramin)",
+                    min_value=0.0,
+                    max_value=15.0,
+                    value=7.4,
+                    step=0.1,
+                )
+                sulfate = st.slider(
+                    "Sulfate (Sulfat)",
+                    min_value=0.0,
+                    max_value=600.0,
+                    value=367.0,
+                    step=1.0,
+                )
+                conductivity = st.slider(
+                    "Conductivity (Konduktivitas)",
+                    min_value=0.0,
+                    max_value=1000.0,
+                    value=435.0,
+                    step=1.0,
+                )
+            with col3:
+                organic_carbon = st.slider(
+                    "Organic Carbon (Karbon Organik)",
+                    min_value=0.0,
+                    max_value=40.0,
+                    value=19.8,
+                    step=0.1,
+                )
+                trihalomethanes = st.slider(
+                    "Trihalomethanes (Trihalometana)",
+                    min_value=0.0,
+                    max_value=150.0,
+                    value=75.1,
+                    step=0.1,
+                )
+                turbidity = st.slider(
+                    "Turbidity (Kekeruhan)",
+                    min_value=0.0,
+                    max_value=10.0,
+                    value=1.9,
+                    step=0.1,
                 )
 
-                # Memilih model berdasarkan pilihan
-                if "SVM" in model_choice:
-                    prediction = svm_model.predict(features_scaled_df)
-                    model_used = "SVM"
-                else:
-                    prediction = rf_model.predict(features_scaled_df)
-                    model_used = "Random Forest"
+        # Parameter input untuk prediksi
+        input_features = [
+            ph,
+            hardness,
+            solids,
+            chloramines,
+            sulfate,
+            conductivity,
+            organic_carbon,
+            trihalomethanes,
+            turbidity,
+        ]
 
-                # Menentukan status berdasarkan hasil prediksi
-                if prediction[0] == 1:
-                    status_text = "LAYAK MINUM (POTABLE)"
-                    status_icon = "✅"
-                    alert_type = "success"
-                else:
-                    status_text = "TIDAK LAYAK MINUM (NOT POTABLE)"
-                    status_icon = "⚠️"
-                    alert_type = "error"
+        feature_names = [
+            "ph",
+            "Hardness",
+            "Solids",
+            "Chloramines",
+            "Sulfate",
+            "Conductivity",
+            "Organic_carbon",
+            "Trihalomethanes",
+            "Turbidity",
+        ]
 
-                timestamp = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+        features_df = pd.DataFrame([input_features], columns=feature_names)
+        features_scaled = scaler.transform(features_df)
+        features_scaled_df = pd.DataFrame(features_scaled, columns=feature_names)
 
-                # Menyimpan hasil prediksi ke dalam session state history
-                st.session_state.history.append(
-                    {
-                        "time": timestamp,
-                        "model": model_used,
-                        "status": status_text,
-                        "icon": status_icon,
-                        "params": {
-                            "pH": ph,
-                            "Hardness": hardness,
-                            "Solids": solids,
-                            "Chloramines": chloramines,
-                            "Sulfate": sulfate,
-                            "Conductivity": conductivity,
-                            "Organic Carbon": organic_carbon,
-                            "Trihalomethanes": trihalomethanes,
-                            "Turbidity": turbidity,
-                        },
-                    }
-                )
-
-                st.markdown("---")
-                st.subheader("Hasil Analisis")
-
-                # Menampilkan hasil berdasarkan alert
-                if alert_type == "success":
-                    st.success(f"### {status_icon} STATUS: {status_text}")
-                    st.write(
-                        f"Berdasarkan klasifikasi algoritma **{model_used}**, karakteristik air ini memenuhi standar keamanan dasar."
-                    )
-                else:
-                    st.error(f"### {status_icon} STATUS: {status_text}")
-                    st.write(
-                        f"Berdasarkan klasifikasi algoritma **{model_used}**, air ini memiliki parameter yang beresiko jika dikonsumsi."
-                    )
+        # Memilih model berdasarkan pilihan di sidebar
+        if "SVM" in model_choice:
+            prediction = svm_model.predict(features_scaled_df)
+            model_used = "SVM"
         else:
-            st.error("Model belum dimuat dengan benar. Pastikan folder 'models' ada.")
+            prediction = rf_model.predict(features_scaled_df)
+            model_used = "Random Forest"
+
+        # Menentukan status berdasarkan hasil prediksi
+        if prediction[0] == 1:
+            status_text = "LAYAK MINUM (POTABLE)"
+            status_icon = "✅"
+            alert_type = "success"
+        else:
+            status_text = "TIDAK LAYAK MINUM (NOT POTABLE)"
+            status_icon = "⚠️"
+            alert_type = "error"
+
+        # Hasil analisis dan rekomendasi
+        st.write("")
+        st.subheader("Hasil Analisis")
+
+        if alert_type == "success":
+            st.success(f"### {status_icon} STATUS: {status_text}")
+            st.write(
+                f"Berdasarkan klasifikasi algoritma **{model_used}**, karakteristik air ini memenuhi standar keamanan dasar."
+            )
+        else:
+            st.error(f"### {status_icon} STATUS: {status_text}")
+            st.write(
+                f"Berdasarkan klasifikasi algoritma **{model_used}**, air ini memiliki parameter yang beresiko jika dikonsumsi."
+            )
+
+        st.markdown("---")
+
+        # Tombol untuk menyimpan hasil prediksi ke riwayat
+        if st.button(
+            "💾 Simpan Hasil Prediksi",
+            type="primary",
+            use_container_width=True,
+        ):
+            timestamp = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+            st.session_state.history.append(
+                {
+                    "time": timestamp,
+                    "model": model_used,
+                    "status": status_text,
+                    "icon": status_icon,
+                    "params": {
+                        "pH": ph,
+                        "Hardness": hardness,
+                        "Solids": solids,
+                        "Chloramines": chloramines,
+                        "Sulfate": sulfate,
+                        "Conductivity": conductivity,
+                        "Organic Carbon": organic_carbon,
+                        "Trihalomethanes": trihalomethanes,
+                        "Turbidity": turbidity,
+                    },
+                }
+            )
+            st.toast("Prediksi berhasil disimpan ke tab 'Riwayat'!", icon="💾")
+
+else:
+    st.error("Model belum dimuat dengan benar. Pastikan komponen model tersedia.")
 
 # Tab 2 untuk panduan parameter
 with tab2:
@@ -242,10 +283,44 @@ with tab3:
 
     if total_items == 0:
         st.info(
-            "Belum ada riwayat prediksi. Silakan lakukan analisis terlebih dahulu di tab 'Prediksi Kelayakan'."
+            "Belum ada riwayat prediksi. Silakan tekan tombol 'Simpan Hasil Prediksi' di tab 'Prediksi Kelayakan'."
         )
     else:
         st.write(f"Total pengujian pada sesi ini: **{total_items} data**")
+
+        # Mengonversi list riwayat menjadi datagrame
+        history_df = pd.DataFrame(
+            [
+                {
+                    "Waktu": item["time"],
+                    "Model": item["model"],
+                    "Status": item["status"],
+                    "pH": item["params"]["pH"],
+                    "Hardness": item["params"]["Hardness"],
+                    "Solids (TDS)": item["params"]["Solids"],
+                    "Chloramines": item["params"]["Chloramines"],
+                    "Sulfate": item["params"]["Sulfate"],
+                    "Conductivity": item["params"]["Conductivity"],
+                    "Organic Carbon": item["params"]["Organic Carbon"],
+                    "Trihalomethanes": item["params"]["Trihalomethanes"],
+                    "Turbidity": item["params"]["Turbidity"],
+                }
+                for item in st.session_state.history
+            ]
+        )
+
+        # Mengonversi dataframe menjadi CSV
+        csv_data = history_df.to_csv(index=False).encode("utf-8")
+
+        st.download_button(
+            label="📥 Unduh Seluruh Riwayat (CSV)",
+            data=csv_data,
+            file_name=f"riwayat_analisis_air_{datetime.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv",
+            use_container_width=True,
+        )
+
+        st.markdown("---")
 
         # Pengaturan pagination
         ITEMS_PER_PAGE = 5
@@ -254,7 +329,9 @@ with tab3:
         # Jika ada lebih dari 1 halaman, tampilkan button untuk navigasi halaman
         if total_pages > 1:
             current_page = st.radio(
-                "Pilih Halaman:", options=range(1, total_pages + 1), horizontal=True
+                "Pilih Halaman:",
+                options=range(1, total_pages + 1),
+                horizontal=True,
             )
         else:
             current_page = 1
@@ -271,7 +348,9 @@ with tab3:
                 col_text, col_btn = st.columns([5, 1])
 
                 with col_text:
-                    st.write(f"**{record['time']}** | Model: `{record['model']}`")
+                    st.write(
+                        f"**🕒 Waktu Penyimpanan:** {record['time']} | Model: `{record['model']}`"
+                    )
                     st.write(f"{record['icon']} **{record['status']}**")
 
                     # Menampilkan detail parameter input
