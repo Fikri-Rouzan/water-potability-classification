@@ -2,13 +2,13 @@
 
 ## 📌 Deskripsi
 
-Proyek ini dirancang untuk memetakan dan mengklasifikasikan tingkat kelayakan konsumsi air berdasarkan berbagai parameter kualitas fisik dan kimia yang terkandung di dalamnya. Dengan memanfaatkan pemodelan berbasis machine learning, sistem ini mampu memprediksi status kelayakan air berdasarkan sampel data kualitas yang dimasukkan. Hasil akhir ini bertujuan memberikan wawasan mendalam mengenai pemantauan kondisi sumber air guna mendukung penyediaan air bersih yang aman bagi kebutuhan konsumsi manusia.
+Proyek ini merupakan implementasi pemodelan machine learning yang digunakan untuk mengklasifikasikan tingkat kelayakan konsumsi air berdasarkan parameter kualitas fisik dan kimia. Pemodelan dibangun dengan menganalisis sampel data yang memuat atribut spesifik kualitas air untuk memprediksi status kelayakan konsumsi. Hasil dari proyek ini ditujukan sebagai alat bantu dalam memantau kondisi sumber daya air guna mendukung penyediaan air bersih yang memenuhi standar keamanan konsumsi manusia.
 
 ---
 
 ## 💾 Dataset
 
-Dataset yang digunakan dalam proyek ini bersumber dari [Kaggle: Water Quality and Potability](https://www.kaggle.com/datasets/uom190346a/water-quality-and-potability). Dataset ini menyajikan gambaran mendalam mengenai pengukuran kualitas air dan penilaian terkait kelayakannya untuk dikonsumsi oleh manusia. Di dalamnya mencakup berbagai baris data yang mewakili sampel air dengan atribut parameter spesifik, yang dilengkapi dengan indikator kelayakan untuk membantu menentukan serta menganalisis apakah air tersebut aman atau tidak untuk digunakan sehari-hari.
+Dataset yang digunakan dalam proyek ini bersumber dari [Kaggle: Water Quality and Potability](https://www.kaggle.com/datasets/uom190346a/water-quality-and-potability). Data ini memuat matriks pengukuran kualitas air dan penilaian terkait kelayakannya untuk dikonsumsi oleh manusia. Di dalamnya terdapat sejumlah baris data sampel air yang dilengkapi dengan berbagai parameter fisikokimia serta kolom indikator kelayakan untuk mempermudah analisis kecocokan air terhadap kebutuhan konsumsi harian.
 
 ---
 
