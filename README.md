@@ -1,4 +1,4 @@
-# Water Potability Classification
+# HydroCheck
 
 ## 📌 Deskripsi
 
@@ -34,8 +34,8 @@ Dataset yang digunakan dalam proyek ini bersumber dari [Kaggle: Water Quality an
 2. **Clone Repositori**
 
 ```bash
-git clone https://github.com/Fikri-Rouzan/water-potability-classification.git
-cd water-potability-classification
+git clone https://github.com/Fikri-Rouzan/hydrocheck.git
+cd hydrocheck
 ```
 
 3. **Buat Virtual Environment**
